@@ -1,0 +1,420 @@
+{
+    "vertices": {
+        "V0": {
+            "id": "V0"
+        },
+        "V1": {
+            "id": "V1"
+        },
+        "V2": {
+            "id": "V2"
+        },
+        "V3": {
+            "id": "V3"
+        },
+        "V4": {
+            "id": "V4"
+        },
+        "V5": {
+            "id": "V5"
+        },
+        "V6": {
+            "id": "V6"
+        },
+        "V7": {
+            "id": "V7"
+        },
+        "V8": {
+            "id": "V8"
+        },
+        "V9": {
+            "id": "V9"
+        },
+        "V10": {
+            "id": "V10"
+        },
+        "V11": {
+            "id": "V11"
+        },
+        "V12": {
+            "id": "V12"
+        },
+        "V13": {
+            "id": "V13"
+        },
+        "V14": {
+            "id": "V14"
+        },
+        "V15": {
+            "id": "V15"
+        },
+        "V16": {
+            "id": "V16"
+        },
+        "V17": {
+            "id": "V17"
+        },
+        "V18": {
+            "id": "V18"
+        },
+        "V19": {
+            "id": "V19"
+        },
+        "V20": {
+            "id": "V20"
+        },
+        "V21": {
+            "id": "V21"
+        },
+        "V22": {
+            "id": "V22"
+        },
+        "V23": {
+            "id": "V23"
+        },
+        "V24": {
+            "id": "V24"
+        },
+        "V25": {
+            "id": "V25"
+        },
+        "V26": {
+            "id": "V26"
+        },
+        "V27": {
+            "id": "V27"
+        },
+        "V28": {
+            "id": "V28"
+        },
+        "V29": {
+            "id": "V29"
+        },
+        "V30": {
+            "id": "V30"
+        },
+        "V31": {
+            "id": "V31"
+        },
+        "V32": {
+            "id": "V32"
+        },
+        "V33": {
+            "id": "V33"
+        }
+    },
+    "edges": [
+        {
+            "source": "V33",
+            "target": "V0"
+        },
+        {
+            "source": "V33",
+            "target": "V32"
+        },
+        {
+            "source": "V33",
+            "target": "V2"
+        },
+        {
+            "source": "V33",
+            "target": "V1"
+        },
+        {
+            "source": "V33",
+            "target": "V3"
+        },
+        {
+            "source": "V33",
+            "target": "V31"
+        },
+        {
+            "source": "V33",
+            "target": "V8"
+        },
+        {
+            "source": "V33",
+            "target": "V13"
+        },
+        {
+            "source": "V33",
+            "target": "V23"
+        },
+        {
+            "source": "V33",
+            "target": "V5"
+        },
+        {
+            "source": "V33",
+            "target": "V6"
+        },
+        {
+            "source": "V33",
+            "target": "V7"
+        },
+        {
+            "source": "V33",
+            "target": "V27"
+        },
+        {
+            "source": "V33",
+            "target": "V29"
+        },
+        {
+            "source": "V33",
+            "target": "V30"
+        },
+        {
+            "source": "V33",
+            "target": "V4"
+        },
+        {
+            "source": "V33",
+            "target": "V10"
+        },
+        {
+            "source": "V0",
+            "target": "V32"
+        },
+        {
+            "source": "V0",
+            "target": "V2"
+        },
+        {
+            "source": "V0",
+            "target": "V1"
+        },
+        {
+            "source": "V0",
+            "target": "V3"
+        },
+        {
+            "source": "V0",
+            "target": "V31"
+        },
+        {
+            "source": "V0",
+            "target": "V8"
+        },
+        {
+            "source": "V0",
+            "target": "V13"
+        },
+        {
+            "source": "V0",
+            "target": "V23"
+        },
+        {
+            "source": "V0",
+            "target": "V5"
+        },
+        {
+            "source": "V0",
+            "target": "V6"
+        },
+        {
+            "source": "V0",
+            "target": "V7"
+        },
+        {
+            "source": "V0",
+            "target": "V19"
+        },
+        {
+            "source": "V0",
+            "target": "V24"
+        },
+        {
+            "source": "V0",
+            "target": "V25"
+        },
+        {
+            "source": "V0",
+            "target": "V27"
+        },
+        {
+            "source": "V32",
+            "target": "V2"
+        },
+        {
+            "source": "V32",
+            "target": "V1"
+        },
+        {
+            "source": "V32",
+            "target": "V3"
+        },
+        {
+            "source": "V32",
+            "target": "V31"
+        },
+        {
+            "source": "V32",
+            "target": "V8"
+        },
+        {
+            "source": "V32",
+            "target": "V13"
+        },
+        {
+            "source": "V32",
+            "target": "V23"
+        },
+        {
+            "source": "V32",
+            "target": "V28"
+        },
+        {
+            "source": "V32",
+            "target": "V29"
+        },
+        {
+            "source": "V32",
+            "target": "V30"
+        },
+        {
+            "source": "V2",
+            "target": "V1"
+        },
+        {
+            "source": "V2",
+            "target": "V3"
+        },
+        {
+            "source": "V2",
+            "target": "V31"
+        },
+        {
+            "source": "V2",
+            "target": "V4"
+        },
+        {
+            "source": "V2",
+            "target": "V5"
+        },
+        {
+            "source": "V2",
+            "target": "V6"
+        },
+        {
+            "source": "V2",
+            "target": "V7"
+        },
+        {
+            "source": "V1",
+            "target": "V3"
+        },
+        {
+            "source": "V1",
+            "target": "V8"
+        },
+        {
+            "source": "V1",
+            "target": "V9"
+        },
+        {
+            "source": "V1",
+            "target": "V10"
+        },
+        {
+            "source": "V1",
+            "target": "V12"
+        },
+        {
+            "source": "V13",
+            "target": "V14"
+        },
+        {
+            "source": "V13",
+            "target": "V15"
+        },
+        {
+            "source": "V16",
+            "target": "V17"
+        },
+        {
+            "source": "V16",
+            "target": "V18"
+        },
+        {
+            "source": "V19",
+            "target": "V20"
+        },
+        {
+            "source": "V19",
+            "target": "V21"
+        },
+        {
+            "source": "V22",
+            "target": "V23"
+        },
+        {
+            "source": "V22",
+            "target": "V24"
+        },
+        {
+            "source": "V25",
+            "target": "V26"
+        },
+        {
+            "source": "V25",
+            "target": "V27"
+        },
+        {
+            "source": "V28",
+            "target": "V29"
+        },
+        {
+            "source": "V28",
+            "target": "V30"
+        },
+        {
+            "source": "V31",
+            "target": "V3"
+        },
+        {
+            "source": "V31",
+            "target": "V4"
+        },
+        {
+            "source": "V5",
+            "target": "V6"
+        },
+        {
+            "source": "V7",
+            "target": "V8"
+        },
+        {
+            "source": "V9",
+            "target": "V10"
+        },
+        {
+            "source": "V11",
+            "target": "V12"
+        },
+        {
+            "source": "V14",
+            "target": "V15"
+        },
+        {
+            "source": "V17",
+            "target": "V18"
+        },
+        {
+            "source": "V20",
+            "target": "V21"
+        },
+        {
+            "source": "V23",
+            "target": "V24"
+        },
+        {
+            "source": "V26",
+            "target": "V27"
+        },
+        {
+            "source": "V29",
+            "target": "V30"
+        }
+    ]
+}
