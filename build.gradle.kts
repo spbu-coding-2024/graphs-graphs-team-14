@@ -4,7 +4,9 @@ plugins {
     id("org.jetbrains.compose") version "1.6.0"
     id("jacoco")
 }
-
+kotlin{
+    jvmToolchain(21)
+}
 repositories {
     mavenCentral()
     maven("https://maven.pkg.jetbrains.space/public/p/compose/dev")
