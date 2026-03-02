@@ -1,5 +1,3 @@
-
-
 import kotlinx.serialization.Serializable
 
 
@@ -18,14 +16,14 @@ fun findBridges(graph: Graph): List<Edge> {
     val visited = mutableMapOf<String, Boolean>()
     val disc = mutableMapOf<String, Int>()
     val low = mutableMapOf<String, Int>()
-    val time = intArrayOf(0) 
+    val time = intArrayOf(0)
 
-    
+
     graph.vertices.keys.forEach { v ->
         visited[v] = false
     }
 
-    
+
     graph.vertices.keys.forEach { vertexId ->
         visited[vertexId]?.let {
             if (!it) {
@@ -84,16 +82,16 @@ private fun dfsBridge(
                         graph = graph
                     )
 
-                    
+
                     low[vertexId] = minOf(low[vertexId]!!, low[neighborId]!!)
 
-                    
+
                     if (low[neighborId]!! > disc[vertexId]!!) {
-                        
+
                         bridges += edge
                     }
                 } else if (neighborId != parent) {
-                    
+
                     low[vertexId] = minOf(low[vertexId]!!, disc[neighborId]!!)
                 }
             }

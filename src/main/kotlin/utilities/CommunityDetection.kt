@@ -1,6 +1,5 @@
-
 data class CommunityResult(
-    val communities: Map<String, Int> 
+    val communities: Map<String, Int>
 )
 
 /**
@@ -15,22 +14,22 @@ fun findCommunitiesByCoreExpansion(graph: Graph): Map<String, Int> {
     val communities = mutableMapOf<String, Int>()
     var communityId = 0
 
-    
+
     val uncoveredVertices = graph.vertices.keys.toMutableSet()
 
     while (uncoveredVertices.isNotEmpty()) {
-        
+
         val core = findMaximalCore(uncoveredVertices, graph, vertexDegrees)
 
-        if (core.isEmpty()) break 
+        if (core.isEmpty()) break
 
-        
+
         core.forEach { vertexId ->
             communities[vertexId] = communityId
             uncoveredVertices.remove(vertexId)
         }
 
-        
+
         val expanded = expandCore(core, uncoveredVertices, graph)
         expanded.forEach { vertexId ->
             communities[vertexId] = communityId
@@ -91,7 +90,12 @@ private fun findMaximalCore(vertices: Set<String>, graph: Graph, initialDegrees:
 }
 
 
-private fun expandCore(core: Set<String>, uncoveredVertices: Set<String>, graph: Graph, threshold: Int = 2): Set<String> {
+private fun expandCore(
+    core: Set<String>,
+    uncoveredVertices: Set<String>,
+    graph: Graph,
+    threshold: Int = 2
+): Set<String> {
     val expansion = mutableSetOf<String>()
 
     uncoveredVertices.forEach { vertexId ->

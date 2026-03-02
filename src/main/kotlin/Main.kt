@@ -28,27 +28,6 @@ import kotlin.math.cos
 import kotlin.math.sin
 import kotlin.math.sqrt
 
-
-@Serializable
-data class Vertex(
-    val id: String,
-    var x: Float = 0f,
-    var y: Float = 0f,
-    var radius: Float = 25f
-)
-
-@Serializable
-data class Edge(
-    val source: String,
-    val target: String,
-    var weight: Float = 1f
-)
-@Serializable
-data class Graph(
-    val vertices: MutableMap<String, Vertex> = mutableMapOf(),
-    val edges: MutableList<Edge> = mutableListOf()
-)
-
 @Serializable
 data class SerializableGraph(
     val vertices: Map<String, Vertex> = mapOf(),
@@ -57,11 +36,11 @@ data class SerializableGraph(
 
 
 enum class InteractionMode {
-    SELECT,      
-    DRAG,        
-    ADD_VERTEX,  
-    ADD_EDGE,    
-    DELETE       
+    SELECT,
+    DRAG,
+    ADD_VERTEX,
+    ADD_EDGE,
+    DELETE
 }
 
 
@@ -74,27 +53,27 @@ class GraphState {
     var selectedAlgorithm by mutableStateOf<AlgorithmType?>(null)
     var selectedVertexId by mutableStateOf<String?>(null)
     var hoveredVertexId by mutableStateOf<String?>(null)
-    var edgeEditMode by mutableStateOf<String?>(null) 
+    var edgeEditMode by mutableStateOf<String?>(null)
     var newEdgeWeight by mutableStateOf("1.0")
-    
-    var interactionMode by mutableStateOf(InteractionMode.SELECT)
-    var edgeCreationStart by mutableStateOf<String?>(null) 
 
-    
+    var interactionMode by mutableStateOf(InteractionMode.SELECT)
+    var edgeCreationStart by mutableStateOf<String?>(null)
+
+
     var communities by mutableStateOf<Map<String, Int>>(emptyMap())
     var bridges by mutableStateOf<List<Edge>>(emptyList())
     var mstEdges by mutableStateOf<List<Edge>>(emptyList())
 
-    
+
     var vertexColors by mutableStateOf<Map<String, Color>>(emptyMap())
     var highlightedEdges by mutableStateOf<Set<Edge>>(emptySet())
 
-    
+
     var algorithmParams by mutableStateOf("")
     var statusMessage by mutableStateOf("Готов к работе")
     var newVertexId by mutableStateOf("V${createSampleGraph().vertices.size}")
     var edgeWeight by mutableStateOf("1.0")
-    
+
     fun getImmutableGraph() = SerializableGraph(
         vertices = this.graph.vertices.toMap(),
         edges = this.graph.edges.toList()
@@ -109,15 +88,15 @@ enum class AlgorithmType {
 }
 
 fun generateColorForCommunity(communityId: Int): Color {
-    val hue = (communityId * 137.508f) % 360f 
-    return Color.hsv(hue, 0.7f, 0.9f) 
+    val hue = (communityId * 137.508f) % 360f
+    return Color.hsv(hue, 0.7f, 0.9f)
 }
 
 
 fun createSampleGraph(): Graph {
     val graph = Graph()
 
-    
+
     val vertexCount = 0
     val centerX = 400f
     val centerY = 300f
@@ -131,7 +110,7 @@ fun createSampleGraph(): Graph {
         graph.vertices["V$i"] = vertex
     }
 
-    
+
 
 
 
@@ -159,9 +138,6 @@ fun findVertexAt(graph: Graph, position: Offset, radius: Float = 25f): String? {
 @Composable
 fun GraphApplication() {
     val state = remember { GraphState() }
-    var isDragging by remember { mutableStateOf(false) }
-    var selectedVertexToMove by remember { mutableStateOf<String?>(null) }
-    var currentDraggedVertex by remember { mutableStateOf<String?>(null) }
     MaterialTheme {
         Column(
             modifier = Modifier
@@ -169,7 +145,7 @@ fun GraphApplication() {
                 .background(Color(0xFFF5F5F5))
                 .padding(8.dp)
         ) {
-            
+
             Text(
                 "Анализатор графов",
                 fontSize = 24.sp,
@@ -178,27 +154,27 @@ fun GraphApplication() {
                 modifier = Modifier.padding(bottom = 8.dp)
             )
 
-            
+
             Row(
                 modifier = Modifier
                     .weight(1f)
                     .fillMaxWidth()
             ) {
-                
+
                 ControlPanel(state, modifier = Modifier.width(300.dp))
 
                 Spacer(modifier = Modifier.width(8.dp))
 
-                
+
                 GraphCanvas(state, modifier = Modifier.weight(1f))
 
                 Spacer(modifier = Modifier.width(8.dp))
 
-                
+
                 InformationPanel(state, modifier = Modifier.width(280.dp))
             }
 
-            
+
             StatusBar(state, modifier = Modifier.fillMaxWidth().height(30.dp))
         }
     }
@@ -221,27 +197,27 @@ fun ControlPanel(state: GraphState, modifier: Modifier = Modifier) {
             color = Color(0xFF2E7D32)
         )
 
-        
+
         InteractionModesSection(state)
 
         Divider(color = Color(0xFFE0E0E0))
 
-        
+
         FileOperationsSection(state)
 
         Divider(color = Color(0xFFE0E0E0))
 
-        
+
         AlgorithmsSection(state)
 
         Divider(color = Color(0xFFE0E0E0))
 
-        
+
         ParametersSection(state)
 
         Spacer(modifier = Modifier.weight(1f))
 
-        
+
         Button(
             onClick = {
                 state.communities = emptyMap()
@@ -266,17 +242,17 @@ fun InteractionModesSection(state: GraphState) {
     Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
         Text("Режимы взаимодействия", fontWeight = FontWeight.Medium)
 
-        
+
         Row(horizontalArrangement = Arrangement.spacedBy(4.dp)) {
             InteractionModeButton(
                 mode = InteractionMode.SELECT,
                 currentMode = state.interactionMode,
                 onClick = {
-                    state.vertexColors=emptyMap()
-                    state.communities=emptyMap()
-                    state.bridges=emptyList()
+                    state.vertexColors = emptyMap()
+                    state.communities = emptyMap()
+                    state.bridges = emptyList()
                     state.mstEdges = emptyList()
-                    state.highlightedEdges=emptySet()
+                    state.highlightedEdges = emptySet()
                     state.selectedAlgorithm = null
                     state.interactionMode = InteractionMode.SELECT
                     state.edgeEditMode = null
@@ -287,25 +263,26 @@ fun InteractionModesSection(state: GraphState) {
                 mode = InteractionMode.DRAG,
                 currentMode = state.interactionMode,
                 onClick = {
-                    state.vertexColors=emptyMap()
-                    state.communities=emptyMap()
-                    state.bridges=emptyList()
+                    state.vertexColors = emptyMap()
+                    state.communities = emptyMap()
+                    state.bridges = emptyList()
                     state.mstEdges = emptyList()
-                    state.highlightedEdges=emptySet()
+                    state.highlightedEdges = emptySet()
                     state.selectedAlgorithm = null
                     state.interactionMode = InteractionMode.DRAG
                     state.edgeEditMode = null
                 },
-                label = "↔ Перетащить")
+                label = "↔ Перетащить"
+            )
             InteractionModeButton(
                 mode = InteractionMode.ADD_VERTEX,
                 currentMode = state.interactionMode,
                 onClick = {
-                    state.vertexColors=emptyMap()
-                    state.communities=emptyMap()
-                    state.bridges=emptyList()
+                    state.vertexColors = emptyMap()
+                    state.communities = emptyMap()
+                    state.bridges = emptyList()
                     state.mstEdges = emptyList()
-                    state.highlightedEdges=emptySet()
+                    state.highlightedEdges = emptySet()
                     state.selectedAlgorithm = null
                     state.interactionMode = InteractionMode.ADD_VERTEX
                     state.edgeEditMode = null
@@ -315,16 +292,16 @@ fun InteractionModesSection(state: GraphState) {
 
         }
 
-        
+
         Row(horizontalArrangement = Arrangement.spacedBy(4.dp)) {
             InteractionModeButton(
                 mode = InteractionMode.ADD_EDGE,
                 currentMode = state.interactionMode,
                 onClick = {
-                    state.vertexColors=emptyMap()
-                    state.communities=emptyMap()
-                    state.bridges=emptyList()
-                    state.highlightedEdges=emptySet()
+                    state.vertexColors = emptyMap()
+                    state.communities = emptyMap()
+                    state.bridges = emptyList()
+                    state.highlightedEdges = emptySet()
                     state.mstEdges = emptyList()
                     state.selectedAlgorithm = null
                     state.interactionMode = InteractionMode.ADD_EDGE
@@ -336,10 +313,10 @@ fun InteractionModesSection(state: GraphState) {
                 mode = InteractionMode.DELETE,
                 currentMode = state.interactionMode,
                 onClick = {
-                    state.vertexColors=emptyMap()
-                    state.communities=emptyMap()
-                    state.bridges=emptyList()
-                    state.highlightedEdges=emptySet()
+                    state.vertexColors = emptyMap()
+                    state.communities = emptyMap()
+                    state.bridges = emptyList()
+                    state.highlightedEdges = emptySet()
                     state.mstEdges = emptyList()
                     state.selectedAlgorithm = null
                     state.interactionMode = InteractionMode.DELETE
@@ -349,10 +326,10 @@ fun InteractionModesSection(state: GraphState) {
             )
             Button(
                 onClick = {
-                    state.vertexColors=emptyMap()
-                    state.communities=emptyMap()
-                    state.bridges=emptyList()
-                    state.highlightedEdges=emptySet()
+                    state.vertexColors = emptyMap()
+                    state.communities = emptyMap()
+                    state.bridges = emptyList()
+                    state.highlightedEdges = emptySet()
                     state.mstEdges = emptyList()
                     state.selectedAlgorithm = null
                     state.interactionMode = InteractionMode.SELECT
@@ -367,10 +344,10 @@ fun InteractionModesSection(state: GraphState) {
             }
         }
 
-        
+
         if (state.interactionMode == InteractionMode.ADD_VERTEX) {
-            while (state.newVertexId in state.graph.vertices){
-                state.newVertexId="V${state.newVertexId.drop(1).toInt() + 1}"
+            while (state.newVertexId in state.graph.vertices) {
+                state.newVertexId = "V${state.newVertexId.drop(1).toInt() + 1}"
             }
             OutlinedTextField(
                 value = state.newVertexId,
@@ -381,7 +358,7 @@ fun InteractionModesSection(state: GraphState) {
             )
         }
 
-        
+
         if (state.interactionMode == InteractionMode.ADD_EDGE || state.edgeEditMode != null) {
             OutlinedTextField(
                 value = if (state.interactionMode == InteractionMode.ADD_EDGE) state.edgeWeight else state.newEdgeWeight,
@@ -462,14 +439,14 @@ fun FileOperationsSection(state: GraphState) {
 
             Button(
                 onClick = {
-                    
+
                     val fileDialog = FileDialog(
-                        null as Frame?, 
+                        null as Frame?,
                         "Сохранить граф как...",
                         FileDialog.SAVE
                     )
-                    fileDialog.file = "*.json" 
-                    fileDialog.directory = System.getProperty("user.home") 
+                    fileDialog.file = "*.json"
+                    fileDialog.directory = System.getProperty("user.home")
                     fileDialog.isVisible = true
 
                     val selectedFile = fileDialog.file
@@ -478,7 +455,7 @@ fun FileOperationsSection(state: GraphState) {
                     if (selectedFile != null && selectedDir != null) {
                         val filePath = "$selectedDir$selectedFile"
                         if (!filePath.endsWith(".json", ignoreCase = true)) {
-                            
+
                             val correctedPath = "$filePath.json"
                             saveGraphToFile(
                                 graph = state.getImmutableGraph(),
@@ -512,7 +489,7 @@ fun AlgorithmsSection(state: GraphState) {
     Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
         Text("Алгоритмы анализа", fontWeight = FontWeight.Medium)
 
-        
+
         Box {
             Button(
                 onClick = { expanded = true },
@@ -539,7 +516,7 @@ fun AlgorithmsSection(state: GraphState) {
             }
         }
 
-        
+
         Button(
             onClick = {
 
@@ -552,19 +529,22 @@ fun AlgorithmsSection(state: GraphState) {
                         }
                         state.statusMessage = "Найдено ${communitiesFound.values.distinct().size} сообществ"
                     }
+
                     AlgorithmType.BRIDGE_FINDING -> {
-                        
+
                         val bridgesFound = findBridges(state.graph)
                         state.bridges = bridgesFound
                         state.highlightedEdges = bridgesFound.toSet()
                         state.statusMessage = "Найдено ${bridgesFound.size} мостов"
                     }
+
                     AlgorithmType.MST -> {
                         val mstEdgesFound = findMst(state.graph)
                         state.mstEdges = mstEdgesFound
                         state.highlightedEdges = mstEdgesFound.toSet()
                         state.statusMessage = "Построено МОД с ${mstEdgesFound.size} рёбрами"
                     }
+
                     null -> state.statusMessage = "Сначала выберите алгоритм"
                 }
             },
@@ -595,12 +575,8 @@ fun ParametersSection(state: GraphState) {
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun GraphCanvas(state: GraphState, modifier: Modifier = Modifier) {
-    
-    
-    
-    
 
-    
+
     println("Dragged Vertex ID: ${state.draggedVertexId}")
     println("Is dragging (state): ${state.isDragging}")
     println("Selected Vertex ID: ${state.selectedVertexId}")
@@ -613,8 +589,8 @@ fun GraphCanvas(state: GraphState, modifier: Modifier = Modifier) {
             .background(Color.White, RoundedCornerShape(8.dp))
             .border(1.dp, Color(0xFFE0E0E0), RoundedCornerShape(8.dp))
     ) {
-        
-        
+
+
         Box(modifier = Modifier.fillMaxSize()) {
             Canvas(
                 modifier = Modifier
@@ -628,7 +604,7 @@ fun GraphCanvas(state: GraphState, modifier: Modifier = Modifier) {
                             })
                         }
                     }
-                    .pointerInput(state.interactionMode) { 
+                    .pointerInput(state.interactionMode) {
                         if (state.interactionMode == InteractionMode.DRAG) {
                             println("Drag gestures ENABLED")
                             detectDragGestures(
@@ -637,35 +613,32 @@ fun GraphCanvas(state: GraphState, modifier: Modifier = Modifier) {
                                     println("Drag start offset: $offset")
                                     val selectedVertexId = findVertexAt(state.graph, offset)
                                     if (selectedVertexId != null) {
-                                        
+
                                         state.isDragging = true
                                         state.draggedVertexId = selectedVertexId
-                                        state.selectedVertexId = selectedVertexId 
+                                        state.selectedVertexId = selectedVertexId
                                         state.statusMessage = "Перемещение вершины: $selectedVertexId"
                                         println("Dragging vertex: $selectedVertexId")
                                     } else {
                                         println("No vertex found at drag start position.")
                                     }
                                 },
-                                onDrag = { change, dragAmount ->
-                                    
-                                    
-                                    
+                                onDrag = { _, dragAmount ->
 
-                                    
+
                                     if (state.isDragging && state.draggedVertexId != null) {
                                         val vertexId = state.draggedVertexId!!
                                         val vertex = state.graph.vertices[vertexId]
                                         vertex?.let {
-                                            
+
                                             it.x += dragAmount.x
                                             it.y += dragAmount.y
-                                            
 
-                                            
-                                            
+
+
+
                                             state.canvasUpdateTrigger++
-                                            
+
                                         }
                                     }
                                 },
@@ -691,7 +664,7 @@ fun GraphCanvas(state: GraphState, modifier: Modifier = Modifier) {
                             while (true) {
                                 val event = awaitPointerEvent()
                                 val position = event.changes.first().position
-                                if (!state.isDragging) { 
+                                if (!state.isDragging) {
                                     state.hoveredVertexId = findVertexAt(state.graph, position)
                                 }
                             }
@@ -699,7 +672,7 @@ fun GraphCanvas(state: GraphState, modifier: Modifier = Modifier) {
                     }
             ) {
                 println("=== Canvas drawing ===")
-                
+
                 val q = state.canvasUpdateTrigger
                 state.graph.edges.forEach { edge ->
                     val source = state.graph.vertices[edge.source]
@@ -727,34 +700,34 @@ fun GraphCanvas(state: GraphState, modifier: Modifier = Modifier) {
                         )
                     }
                 }
-                
+
                 state.graph.vertices.values.forEach { vertex ->
                     val color = state.vertexColors[vertex.id] ?: Color(0xFF2196F3)
                     val isSelected = vertex.id == state.selectedVertexId
                     val isHovered = vertex.id == state.hoveredVertexId
-                    
+
                     if (isSelected) {
                         drawCircle(
                             color = Color.Yellow.copy(alpha = 0.3f),
                             radius = vertex.radius + 8f,
                             center = Offset(vertex.x, vertex.y)
                         )
-                    } else if (isHovered && !state.isDragging) { 
+                    } else if (isHovered && !state.isDragging) {
                         drawCircle(
                             color = Color.LightGray.copy(alpha = 0.3f),
                             radius = vertex.radius + 5f,
                             center = Offset(vertex.x, vertex.y)
                         )
                     }
-                    
+
                     drawCircle(
                         color = color,
                         radius = vertex.radius,
                         center = Offset(vertex.x, vertex.y)
                     )
                 }
-                
-                
+
+
                 if (state.isDragging && state.draggedVertexId != null) {
                     val vertex = state.graph.vertices[state.draggedVertexId!!]
                     vertex?.let {
@@ -766,10 +739,10 @@ fun GraphCanvas(state: GraphState, modifier: Modifier = Modifier) {
                     }
                 }
             }
-            
-            key(state.canvasUpdateTrigger){
-            Box(modifier = Modifier.fillMaxSize().padding(16.dp)) {
-                state.graph.edges.forEach { edge ->
+
+            key(state.canvasUpdateTrigger) {
+                Box(modifier = Modifier.fillMaxSize().padding(16.dp)) {
+                    state.graph.edges.forEach { edge ->
 
                         val source = state.graph.vertices[edge.source]
                         val target = state.graph.vertices[edge.target]
@@ -784,19 +757,20 @@ fun GraphCanvas(state: GraphState, modifier: Modifier = Modifier) {
                                 fontWeight = FontWeight.Bold
                             )
 
+                        }
+                    }
+                    state.graph.vertices.values.forEach { vertex ->
+                        Text(
+                            text = vertex.id,
+                            modifier = Modifier.offset(x = (vertex.x - 8).dp, y = (vertex.y - 8).dp),
+                            fontSize = 10.sp,
+                            color = Color.White,
+                            fontWeight = FontWeight.Bold
+                        )
                     }
                 }
-                state.graph.vertices.values.forEach { vertex ->
-                    Text(
-                        text = vertex.id,
-                        modifier = Modifier.offset(x = (vertex.x - 8).dp, y = (vertex.y - 8).dp),
-                        fontSize = 10.sp,
-                        color = Color.White,
-                        fontWeight = FontWeight.Bold
-                    )
-                }
-            }}
-            
+            }
+
             Box(
                 modifier = Modifier
                     .align(Alignment.TopEnd)
@@ -811,15 +785,16 @@ fun GraphCanvas(state: GraphState, modifier: Modifier = Modifier) {
                     LegendItem("МОД", Color(0xFF2E7D32))
                     LegendItem("Сообщества", Color(0xFFFF6B6B))
                     Text("Режим: ${getModeName(state.interactionMode)}", fontSize = 10.sp)
-                    if (state.isDragging) { 
+                    if (state.isDragging) {
                         Text("Перетаскивание...", fontSize = 10.sp, color = Color(0xFFFF9800))
                     }
                 }
             }
         }
-        
+
     }
 }
+
 fun findEdgeAt(graph: Graph, position: Offset, tolerance: Float = 10f): Edge? {
     return graph.edges.find { edge ->
         val source = graph.vertices[edge.source]
@@ -832,25 +807,10 @@ fun findEdgeAt(graph: Graph, position: Offset, tolerance: Float = 10f): Edge? {
 
 
 fun handleCanvasClick(state: GraphState, position: Offset) {
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
+
 
     if (state.edgeEditMode != null) {
-        
+
         val clickedEdge = findEdgeAt(state.graph, position)
         if (clickedEdge != null) {
             val newWeight = state.newEdgeWeight.toFloatOrNull() ?: 1.0f
@@ -870,33 +830,30 @@ fun handleCanvasClick(state: GraphState, position: Offset) {
             state.selectedVertexId = vertexId
             state.statusMessage = vertexId?.let { "Выбрана вершина: $it" } ?: "Снято выделение"
         }
+
         InteractionMode.DRAG -> {
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
+
+
             val vertexId = findVertexAt(state.graph, position)
             state.selectedVertexId = vertexId
-            state.statusMessage = vertexId?.let { "Выбрана вершина: $it (режим DRAG)" } ?: "Снято выделение (режим DRAG)"
+            state.statusMessage =
+                vertexId?.let { "Выбрана вершина: $it (режим DRAG)" } ?: "Снято выделение (режим DRAG)"
         }
+
         InteractionMode.ADD_VERTEX -> {
             addVertex(state, position)
             state.canvasUpdateTrigger++
         }
+
         InteractionMode.ADD_EDGE -> {
             addEdge(state, position)
             state.canvasUpdateTrigger++
         }
+
         InteractionMode.DELETE -> {
             val vertexId = findVertexAt(state.graph, position)
             if (vertexId != null) {
-                
+
                 state.graph.vertices.remove(vertexId)
                 state.graph.edges.removeAll { it.source == vertexId || it.target == vertexId }
                 if (state.selectedVertexId == vertexId) {
@@ -904,7 +861,7 @@ fun handleCanvasClick(state: GraphState, position: Offset) {
                 }
                 state.statusMessage = "Удалена вершина: $vertexId"
             } else {
-                
+
                 val initialEdgesCount = state.graph.edges.size
                 state.graph.edges.removeAll { edge ->
                     val source = state.graph.vertices[edge.source]
@@ -923,6 +880,7 @@ fun handleCanvasClick(state: GraphState, position: Offset) {
         }
     }
 }
+
 fun addVertex(state: GraphState, position: Offset) {
     val newId = state.newVertexId.ifEmpty { "V${state.graph.vertices.size}" }
     if (!state.graph.vertices.containsKey(newId)) {
@@ -1004,17 +962,17 @@ fun InformationPanel(state: GraphState, modifier: Modifier = Modifier) {
             color = Color(0xFF2E7D32)
         )
 
-        
+
         GraphStatistics(state)
 
         Divider(color = Color(0xFFE0E0E0))
 
-        
+
         AlgorithmResults(state)
 
         Divider(color = Color(0xFFE0E0E0))
 
-        
+
         DetailedInfo(state)
     }
 }
@@ -1049,17 +1007,20 @@ fun AlgorithmResults(state: GraphState) {
                     }
                 }
             }
+
             AlgorithmType.BRIDGE_FINDING -> {
                 Text("Мостов: ${state.bridges.size}", fontSize = 12.sp, color = Color.Red)
                 state.bridges.forEach { bridge ->
                     Text("${bridge.source} - ${bridge.target}", fontSize = 10.sp)
                 }
             }
+
             AlgorithmType.MST -> {
                 val totalWeight = state.mstEdges.sumOf { it.weight.toDouble() }
                 Text("Рёбер в МОД: ${state.mstEdges.size}", fontSize = 12.sp, color = Color(0xFF2E7D32))
                 Text("Вес МОД: ${"%.2f".format(totalWeight)}", fontSize = 12.sp)
             }
+
             null -> Text("Алгоритм не выбран", fontSize = 12.sp, color = Color.Gray)
 
         }
@@ -1108,10 +1069,12 @@ fun getModeName(mode: InteractionMode): String {
         InteractionMode.DELETE -> "Удаление"
     }
 }
+
 fun main() = application {
     Window(
         onCloseRequest = ::exitApplication,
-        title = "Graph Analyzer - Анализатор графов") {
+        title = "Graph Analyzer - Анализатор графов"
+    ) {
         GraphApplication()
     }
 }

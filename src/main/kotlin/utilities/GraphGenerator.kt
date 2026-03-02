@@ -22,8 +22,8 @@ data class Edge2(
 
 @kotlinx.serialization.Serializable
 data class Graph2(
-    val vertices: Map<String, Vertex2> = mapOf(), 
-    val Edge2s: List<Edge2> = listOf()             
+    val vertices: Map<String, Vertex2> = mapOf(),
+    val Edge2s: List<Edge2> = listOf()
 )
 
 /**
@@ -37,18 +37,18 @@ typealias DegreeSequence = Map<String, Int>
  * @return Graph2 с вершинами и рёбрами, удовлетворяющими степени
  */
 fun generateGraph2FromDegreeSequence(degreeSequence: DegreeSequence): Graph2 {
-    
+
     val degrees = degreeSequence.toMutableMap()
     val Graph2 = Graph2(
         vertices = mutableMapOf(),
         Edge2s = mutableListOf()
     )
 
-    
+
     val Vertex2Ids = degreeSequence.keys.toList()
     val centerX = 400f
     val centerY = 300f
-    val radius = 300f 
+    val radius = 300f
 
     Vertex2Ids.forEachIndexed { index, id ->
         val angle = 2f * kotlin.math.PI.toFloat() * index / Vertex2Ids.size
@@ -56,35 +56,34 @@ fun generateGraph2FromDegreeSequence(degreeSequence: DegreeSequence): Graph2 {
         val y = centerY + radius * sin(angle)
         (Graph2.vertices as MutableMap)[id] = Vertex2(id, x, y)
     }
-    
 
-    
+
     val Edge2sToAdd = mutableListOf<Pair<String, String>>()
 
     while (degrees.values.any { it > 0 }) {
-        
+
         val sortedDegrees = degrees.filter { it.value > 0 }.toList().sortedByDescending { it.second }
 
         if (sortedDegrees.isEmpty()) break
 
         val (highestId, highestDegree) = sortedDegrees.first()
 
-        
+
         degrees.remove(highestId)
 
-        
+
         val targets = sortedDegrees.drop(1).take(highestDegree)
 
         for ((targetId, _) in targets) {
-            
+
             Edge2sToAdd.add(highestId to targetId)
 
-            
+
             degrees[targetId] = degrees[targetId]!! - 1
         }
     }
 
-    
+
     Edge2sToAdd.forEach { (source, target) ->
         (Graph2.Edge2s as MutableList).add(Edge2(source, target, 1.0f))
     }
