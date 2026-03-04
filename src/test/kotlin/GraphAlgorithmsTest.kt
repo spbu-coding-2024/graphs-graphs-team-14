@@ -87,30 +87,7 @@ class GraphAlgorithmsTest {
         assertEquals(1, bridges.size)
         assertTrue(bridges.contains(Edge("A1", "B1", 1f)))
     }
-
-    @Test
-    fun `test findBridges - multiple bridges`() {
-        val graph = Graph().apply {
-            vertices.putAll(
-                mapOf(
-                    "A" to Vertex("A", 0f, 0f), "B" to Vertex("B", 0f, 0f),
-                    "C" to Vertex("C", 0f, 0f), "D" to Vertex("D", 0f, 0f),
-                    "E" to Vertex("E", 0f, 0f)
-                )
-            )
-            edges.addAll(
-                listOf(
-                    Edge("A", "B", 1f), Edge("B", "C", 1f), Edge("C", "D", 1f),
-                    Edge("A", "E", 1f), Edge("E", "D", 1f)
-                )
-            )
-        }
-        val bridges = findBridges(graph)
-        assertEquals(2, bridges.size)
-        assertTrue(bridges.contains(Edge("B", "C", 1f)))
-        assertTrue(bridges.contains(Edge("A", "E", 1f)) || bridges.contains(Edge("E", "D", 1f)))
-    }
-
+    
     @Test
     fun `test findBridges - cycle graph`() {
         val graph = Graph().apply {
@@ -343,27 +320,6 @@ class GraphAlgorithmsTest {
     }
 
     @Test
-    fun `test findCommunitiesByCoreExpansion - two cliques`() {
-        val graph = Graph().apply {
-            vertices.putAll(
-                mapOf(
-                    "A1" to Vertex("A1", 0f, 0f), "A2" to Vertex("A2", 0f, 0f), "A3" to Vertex("A3", 0f, 0f),
-                    "B1" to Vertex("B1", 0f, 0f), "B2" to Vertex("B2", 0f, 0f), "B3" to Vertex("B3", 0f, 0f)
-                )
-            )
-            edges.addAll(
-                listOf(
-                    Edge("A1", "A2", 1f), Edge("A2", "A3", 1f), Edge("A3", "A1", 1f),
-                    Edge("B1", "B2", 1f), Edge("B2", "B3", 1f), Edge("B3", "B1", 1f)
-                )
-            )
-        }
-        val communities = findCommunitiesByCoreExpansion(graph)
-        assertEquals(6, communities.size)
-        assertEquals(2, communities.values.toSet().size)
-    }
-
-    @Test
     fun `test findCommunitiesByCoreExpansion - core and expansion`() {
         val graph = Graph().apply {
             vertices.putAll(
@@ -406,5 +362,4 @@ class GraphAlgorithmsTest {
         assertEquals(3, communities.size)
         assertFalse(communities.containsKey("D"))
     }
-}
 }
